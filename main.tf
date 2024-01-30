@@ -71,25 +71,9 @@ resource "helm_release" "neuvector-core" {
   create_namespace = true
   namespace        = "cattle-neuvector-system"
 
-  set {
-    name  = "k3s.enabled"
-    value = "true"
-  }
-
-  set {
-    name  = "rbac"
-    value = "false"
-  }
-
-  set {
-    name  = "manager.svc.type"
-    value = "NodePort"
-  }
-
-  set {
-    name = "controller.secret.enabled"
-    value = "true"
-  }
+  values = [
+    "${file("${path.cwd}/custom-helm-values.yaml")}"
+  ]
 
   set {
     name  = "controller.secret.data.userinitcfg\\.yaml.users[0].Password"
